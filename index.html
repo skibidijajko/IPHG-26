@@ -1,199 +1,58 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>IPHG</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPHPG</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <header>
+    <div class="logo-container">
+      <!-- Opcja 1: zewnętrzny plik -->
+      <img src="logo.png" alt="IPHPG Logo" class="logo">
+      
+      <!-- Opcja 2: base64 (wklej swoje) – usuń linię powyżej jeśli używasz -->
+      <!-- <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUg... (tu wklej swój base64)" alt="IPHPG Logo" class="logo"> -->
+    </div>
+    <nav id="boards">
+      <a href="#" data-board="general" class="active">/general/</a>
+      <a href="#" data-board="hunts">/hunts/</a>
+      <a href="#" data-board="dox">/dox/</a>
+    </nav>
+  </header>
 
-<header>
-  <img src="logo.png" alt="IPHG Logo">
-  <h1>IPHG</h1>
-  <p>anonymous posting board</p>
-</header>
+  <main>
+    <section id="thread-list-section">
+      <h2 id="current-board-name">/general/</h2>
+      <div id="thread-list"></div>
+      <button id="new-thread-btn">Start New Thread</button>
+    </section>
 
-<div class="boards">
-<button id="g-general" onclick="setGroup('general')">/general/ 🙂</button>
-<button id="g-hunts" onclick="setGroup('hunts')">/hunts/ 🔎</button>
-<button id="g-dox" onclick="setGroup('dox')">/dox/ 📂</button>
-</div>
+    <section id="new-thread-form" class="hidden">
+      <h3>New Thread → /<span id="form-board"></span>/</h3>
+      <input id="thread-title" placeholder="Title" maxlength="100">
+      <textarea id="thread-comment" placeholder="Comment..." rows="7"></textarea>
+      <input type="file" id="thread-image" accept="image/*">
+      <div id="thread-image-preview" class="preview"></div>
+      <button id="create-thread">Post Thread</button>
+      <button id="cancel-new-thread">Cancel</button>
+    </section>
 
-<section class="post-form">
-<textarea id="text" placeholder="Write something..."></textarea>
-<input type="file" id="img" accept="image/*">
-<br><br>
-<button onclick="addPost()">Post</button>
-</section>
+    <section id="thread-view" class="hidden">
+      <button id="back-to-list">← Back</button>
+      <h2 id="view-thread-title"></h2>
+      <div id="posts"></div>
 
-<button id="admin-btn" onclick="toggleAdmin()">Admin Panel</button>
+      <div class="reply-box">
+        <textarea id="reply-comment" placeholder="Reply..." rows="6"></textarea>
+        <input type="file" id="reply-image" accept="image/*">
+        <div id="reply-image-preview" class="preview"></div>
+        <button id="send-reply">Post</button>
+      </div>
+    </section>
+  </main>
 
-<div id="admin-panel" style="display:none;">
-<h3>Admin Panel</h3>
-<div>
-<strong>Banned Words:</strong>
-<input type="text" id="new-banned" placeholder="add word">
-<button onclick="addBannedWord()">Add</button>
-<ul id="banned-list"></ul>
-</div>
-<div>
-<strong>Posts:</strong>
-<ul id="admin-posts"></ul>
-</div>
-</div>
-
-<hr>
-<div id="posts"></div>
-
-<script>
-let group="general";
-
-function setGroup(g){
-  group=g;
-  document.querySelectorAll('.boards button').forEach(b=>b.classList.remove('active'));
-  document.getElementById('g-'+g).classList.add('active');
-  render();
-}
-
-// POSTY
-async function fetchPosts(){ return await (await fetch('/api/posts')).json(); }
-
-async function addPost(){
-  const text=document.getElementById('text').value;
-  const file=document.getElementById('img').files[0];
-  if(!text && !file) return;
-
-  let imgData=null;
-  if(file){
-    imgData = await new Promise(r=>{
-      const reader=new FileReader();
-      reader.onload=e=>r(e.target.result);
-      reader.readAsDataURL(file);
-    });
-  }
-
-  const res=await fetch('/api/posts',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({group,text,img:imgData})
-  });
-  const data = await res.json();
-  if(!data.success){ alert(data.message); return; }
-
-  document.getElementById('text').value='';
-  document.getElementById('img').value='';
-  render();
-}
-
-async function react(i,e){
-  await fetch('/api/react',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({index:i,emoji:e})
-  });
-  render();
-}
-
-async function render(){
-  const posts = await fetchPosts();
-  const el=document.getElementById('posts');
-  el.innerHTML='';
-  posts.filter(p=>p.group===group).forEach((p,i)=>{
-    const d=document.createElement('div');
-    d.className='post';
-    d.innerHTML=`<span class="anon">Anonymous</span>
-                 <span class="date">${p.date}</span>
-                 <p>${p.text||''}</p>`;
-    if(p.img){
-      const im=document.createElement('img');
-      im.src=p.img;
-      im.className='post-img';
-      d.appendChild(im);
-    }
-    const r=document.createElement('div');
-    r.className='reactions';
-    Object.keys(p.reactions).forEach(e=>{
-      const b=document.createElement('button');
-      b.textContent=`${e} ${p.reactions[e]}`;
-      b.onclick=()=>react(i,e);
-      r.appendChild(b);
-    });
-    d.appendChild(r);
-    el.appendChild(d);
-  });
-}
-
-// PANEL ADMINA
-async function toggleAdmin(){
-  const panel=document.getElementById('admin-panel');
-  panel.style.display = panel.style.display==='none'?'block':'none';
-  await renderAdmin();
-}
-
-async function addBannedWord(){
-  const word=document.getElementById('new-banned').value.trim();
-  if(!word) return;
-  await fetch('/api/bannedWords',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({word})
-  });
-  document.getElementById('new-banned').value='';
-  renderAdmin();
-}
-
-async function removeBannedWord(word){
-  await fetch('/api/removeBanned',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({word})
-  });
-  renderAdmin();
-}
-
-async function deletePost(i){
-  await fetch('/api/delete',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({index:i})
-  });
-  renderAdmin();
-  render();
-}
-
-async function renderAdmin(){
-  const bannedList = document.getElementById('banned-list');
-  const adminPosts = document.getElementById('admin-posts');
-
-  const banned = await (await fetch('/api/bannedWords')).json();
-  bannedList.innerHTML='';
-  banned.forEach(w=>{
-    const li=document.createElement('li');
-    li.textContent = w+' ';
-    const btn=document.createElement('button');
-    btn.textContent='Remove';
-    btn.onclick = ()=>removeBannedWord(w);
-    li.appendChild(btn);
-    bannedList.appendChild(li);
-  });
-
-  const posts = await fetchPosts();
-  adminPosts.innerHTML='';
-  posts.forEach((p,i)=>{
-    const li=document.createElement('li');
-    li.innerHTML=`[${p.group}] ${p.text||'(image)'} ${p.date} `;
-    const btn=document.createElement('button');
-    btn.textContent='Delete';
-    btn.onclick = ()=>deletePost(i);
-    li.appendChild(btn);
-    adminPosts.appendChild(li);
-  });
-}
-
-setGroup('general');
-render();
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>
