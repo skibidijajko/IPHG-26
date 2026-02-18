@@ -27,8 +27,8 @@
       <h3>New thread on /<span id="form-board"></span>/</h3>
       <input id="thread-title" placeholder="Title" maxlength="100">
       <textarea id="thread-comment" placeholder="Comment..." rows="7"></textarea>
-      <input type="file" id="thread-image" accept="image/*">
-      <div id="thread-image-preview" class="preview"></div>
+      <input type="file" id="thread-image" accept="image/*,video/mp4,video/webm">
+      <div id="thread-media-preview" class="preview"></div>
       <button id="create-thread">Post</button>
       <button id="cancel-new-thread">Cancel</button>
     </section>
@@ -40,12 +40,26 @@
 
       <div class="reply-box">
         <textarea id="reply-comment" placeholder="Reply..." rows="6"></textarea>
-        <input type="file" id="reply-image" accept="image/*">
-        <div id="reply-image-preview" class="preview"></div>
+        <input type="file" id="reply-image" accept="image/*,video/mp4,video/webm">
+        <div id="reply-media-preview" class="preview"></div>
         <button id="send-reply">Post reply</button>
       </div>
     </section>
   </main>
+
+  <!-- Emoji picker (ukryty domyślnie) -->
+  <div id="emoji-picker" class="hidden emoji-picker">
+    <div class="emoji-grid">
+      <button data-emoji="👍">👍</button>
+      <button data-emoji="😂">😂</button>
+      <button data-emoji="😢">😢</button>
+      <button data-emoji="🔥">🔥</button>
+      <button data-emoji="💀">💀</button>
+      <button data-emoji="🤔">🤔</button>
+      <button data-emoji="❤️">❤️</button>
+      <button data-emoji="😡">😡</button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
