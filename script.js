@@ -1,7 +1,9 @@
 let currentBoard = 'general';
 let currentThreadId = null;
+const emojiList = ['👍', '😂', '😢', '🔥', '💀', '🤔', '❤️', '😡', '👀', '🗿', '🙌', '🚀'];
 
-const emojiList = ['👍', '😂', '😢', '🔥', '💀', '🤔', '❤️'];
+// Zmienna do przechowywania aktualnego posta dla pickera
+let activePostId = null;
 
 async function loadThreads() {
   const res = await fetch(`/api/${currentBoard}`);
@@ -54,44 +56,76 @@ async function openThread(id) {
             ${e} <span class="count">${c}</span>
           </button>
         `).join('')}
-        <button class="reaction-btn add-reaction" data-post-id="${p.id}">+ emoji</button>
+        <!-- Przycisk otwierający picker -->
+        <button class="emoji-toggle" data-post-id="${p.id}">Emoji</button>
       </div>
     `;
     postsDiv.appendChild(postDiv);
   });
 
-  // Obsługa reakcji
-  document.querySelectorAll('.reaction-btn:not(.add-reaction)').forEach(btn => {
-    btn.addEventListener('click', () => sendReaction(btn.dataset.emoji, btn.dataset.postId));
+  // Dodajemy obsługę kliknięć w istniejące reakcje
+  document.querySelectorAll('.reaction-btn:not(.emoji-toggle)').forEach(btn => {
+    btn.addEventListener('click', () => {
+      sendReaction(btn.dataset.emoji, btn.dataset.postId);
+    });
   });
 
-  document.querySelectorAll('.add-reaction').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const emoji = prompt('Enter emoji (e.g. 👍 🔥 💀)', '');
-      if (emoji && emoji.trim().length <= 2) {
-        await sendReaction(emoji.trim(), btn.dataset.postId);
-      }
+  // Dodajemy obsługę przycisku "Emoji"
+  document.querySelectorAll('.emoji-toggle').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation(); // zapobiega propagacji do innych elementów
+      activePostId = btn.dataset.postId;
+
+      const picker = document.getElementById('emoji-picker');
+      const rect = btn.getBoundingClientRect();
+
+      picker.style.left = `${rect.left + window.scrollX}px`;
+      picker.style.top = `${rect.bottom + window.scrollY + 6}px`;
+
+      picker.classList.remove('hidden');
     });
   });
 }
 
+// Funkcja wysyłająca reakcję
 async function sendReaction(emoji, postId) {
+  if (!emojiList.includes(emoji)) return; // tylko z listy
+
   try {
     const res = await fetch(`/api/${currentBoard}/${currentThreadId}/${postId}/react`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ emoji })
     });
+
     if (res.ok) {
-      openThread(currentThreadId);
+      openThread(currentThreadId); // odśwież wątek
     } else {
       const data = await res.json();
       alert(data.error || 'Failed to add reaction');
     }
   } catch (err) {
-    console.error(err);
+    console.error('Reaction error:', err);
   }
 }
+
+// Zamykanie pickera po kliknięciu poza nim
+document.addEventListener('click', e => {
+  const picker = document.getElementById('emoji-picker');
+  if (picker && !picker.contains(e.target) && !e.target.classList.contains('emoji-toggle')) {
+    picker.classList.add('hidden');
+  }
+});
+
+// Obsługa kliknięcia emoji w pickerze (dodaj to raz na końcu)
+document.querySelectorAll('#emoji-picker button').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    if (!activePostId) return;
+    const emoji = btn.dataset.emoji;
+    await sendReaction(emoji, activePostId);
+    document.getElementById('emoji-picker').classList.add('hidden');
+  });
+});
 
 function escapeHtml(text) {
   return text.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]);
@@ -195,5 +229,5 @@ function previewImage(e, previewId) {
   reader.readAsDataURL(file);
 }
 
-// Start
+// Start aplikacji
 loadThreads();
