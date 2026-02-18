@@ -1,6 +1,6 @@
 let currentBoard = 'general';
 let currentThreadId = null;
-const emojiList = ['👍', '😂', '😢', '🔥', '💀', '🤔', '❤️', '😡', '👀', '🗿', '🙌', '🚀'];
+const emojiList = ['👍', '😂', '😢', '🔥', '💀', '🤔', '❤️', '😡', '👀'];
 
 // Zmienna do przechowywania aktualnego posta dla pickera
 let activePostId = null;
