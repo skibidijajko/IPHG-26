@@ -8,11 +8,7 @@
 </head>
 <body>
   <header>
-    <div class="logo-container">
-    
-      <img src="logo.png" alt="IPHPG Logo" class="logo">
-      
-    </div>
+    <h1>IPHPG</h1>
     <nav id="boards">
       <a href="#" data-board="general" class="active">/general/</a>
       <a href="#" data-board="hunts">/hunts/</a>
@@ -24,16 +20,16 @@
     <section id="thread-list-section">
       <h2 id="current-board-name">/general/</h2>
       <div id="thread-list"></div>
-      <button id="new-thread-btn">Start New Thread</button>
+      <button id="new-thread-btn">New Thread</button>
     </section>
 
     <section id="new-thread-form" class="hidden">
-      <h3>New Thread → /<span id="form-board"></span>/</h3>
+      <h3>New thread on /<span id="form-board"></span>/</h3>
       <input id="thread-title" placeholder="Title" maxlength="100">
       <textarea id="thread-comment" placeholder="Comment..." rows="7"></textarea>
       <input type="file" id="thread-image" accept="image/*">
       <div id="thread-image-preview" class="preview"></div>
-      <button id="create-thread">Post Thread</button>
+      <button id="create-thread">Post</button>
       <button id="cancel-new-thread">Cancel</button>
     </section>
 
@@ -46,7 +42,7 @@
         <textarea id="reply-comment" placeholder="Reply..." rows="6"></textarea>
         <input type="file" id="reply-image" accept="image/*">
         <div id="reply-image-preview" class="preview"></div>
-        <button id="send-reply">Post</button>
+        <button id="send-reply">Post reply</button>
       </div>
     </section>
   </main>
