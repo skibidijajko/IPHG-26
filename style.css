@@ -1,97 +1,94 @@
-body{
-  font-family:Verdana,Arial,sans-serif;
-  background:#eef2ff;
-  margin:0;
-  padding:20px;
-  color:#000;
+* { box-sizing: border-box; margin:0; padding:0; }
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #0a0a0a;
+  color: #e0e0e0;
+  line-height: 1.45;
+}
+header {
+  background: #000 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><text x="10" y="60" font-size="40" fill="%23110000">IPHPG</text></svg>') repeat;
+  padding: 10px 0;
+  text-align: center;
+  border-bottom: 4px solid #c00;
+}
+.logo-container {
+  margin: 15px 0;
+}
+.logo {
+  max-width: 90%;
+  max-height: 220px;
+  border: 3px solid #400;
+  box-shadow: 0 0 20px #800;
+}
+nav {
+  margin: 15px 0;
+}
+nav a {
+  color: #f33;
+  font-weight: bold;
+  font-size: 1.3rem;
+  margin: 0 20px;
+  text-decoration: none;
+  text-shadow: 0 0 8px #800;
+}
+nav a:hover, nav a.active {
+  color: #ff0;
+  text-shadow: 0 0 12px #ff0;
 }
 
-header{
-  display:flex;
-  align-items:center;
-  border-bottom:2px solid #555;
-  padding:10px 20px;
-  margin-bottom:15px;
-  background:#eef2ff;
+main { max-width: 1100px; margin: 20px auto; padding: 0 12px; }
+
+.thread {
+  background: #111;
+  padding: 14px;
+  margin: 15px 0;
+  border: 1px solid #300;
+  cursor: pointer;
+  transition: border 0.2s;
+}
+.thread:hover { border-color: #c00; }
+.thread img { max-width: 140px; float: right; margin: 0 0 10px 15px; border: 2px solid #222; }
+
+.post {
+  background: #181818;
+  padding: 12px;
+  margin: 15px 0;
+  border-left: 6px solid #400;
+}
+.post img {
+  max-width: 100%;
+  margin: 10px 0;
+  border: 1px solid #222;
+  display: block;
+}
+.meta { color: #777; font-size: 0.9rem; }
+
+.hidden { display: none !important; }
+
+.preview img { max-height: 240px; border: 2px dashed #c00; margin: 10px 0; }
+
+button {
+  background: #200;
+  color: #f44;
+  border: 2px solid #600;
+  padding: 10px 20px;
+  margin: 8px 8px 8px 0;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+button:hover {
+  background: #400;
+  color: #ff0;
+  border-color: #800;
 }
 
-header img{
-  width:50px;
-  height:50px;
-  margin-right:12px;
-}
-
-header h1{
-  font-size:28px;
-  margin:0;
-  color:#117743;
-}
-
-header p{
-  font-size:12px;
-  color:#555;
-  margin-left:12px;
-}
-
-.boards button{
-  background:#d6daf0;
-  border:1px solid #b7c5d9;
-  padding:6px 12px;
-  margin:4px;
-  border-radius:6px;
-  cursor:pointer;
-}
-.boards button.active{background:#98a8c0;color:white}
-
-.post-form{
-  background:#d6daf0;
-  padding:12px;
-  border-radius:8px;
-  margin-bottom:20px;
-}
-
-textarea{
-  width:100%;
-  height:90px;
-  border-radius:6px;
-  border:1px solid #aaa;
-  padding:6px;
-  margin-bottom:8px;
-  font-family:monospace;
-}
-
-.post{
-  background:#f0e0d6;
-  border:1px solid #d9bfb7;
-  padding:10px;
-  margin-bottom:12px;
-  border-radius:6px;
-}
-
-.anon{color:#117743;font-weight:bold}
-.date{color:#555;font-size:12px;margin-left:6px}
-
-img.post-img{max-width:260px;margin-top:8px;border-radius:4px}
-
-.reactions{margin-top:8px}
-.reactions button{
-  font-size:12px;
-  background:#e6e6e6;
-  border:1px solid #bbb;
-  border-radius:12px;
-  padding:2px 8px;
-  margin-right:4px;
-  cursor:pointer;
-}
-
-#admin-btn{
-  margin-top:12px;
-  padding:6px 10px;
-  cursor:pointer;
-}
-
-#admin-panel{
-  border:1px solid #555;
-  padding:10px;
-  margin:10px 0;
+input, textarea {
+  width: 100%;
+  background: #0f0f0f;
+  color: #ddd;
+  border: 1px solid #300;
+  padding: 10px;
+  margin: 8px 0;
+  font-family: inherit;
 }
