@@ -1,94 +1,90 @@
-* { box-sizing: border-box; margin:0; padding:0; }
+* { box-sizing:border-box; margin:0; padding:0; }
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: #0a0a0a;
-  color: #e0e0e0;
-  line-height: 1.45;
+  font-family: Arial, sans-serif;
+  background:#0a0a0a;
+  color:#ddd;
+  line-height:1.45;
 }
 header {
-  background: #000 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><text x="10" y="60" font-size="40" fill="%23110000">IPHPG</text></svg>') repeat;
-  padding: 10px 0;
-  text-align: center;
-  border-bottom: 4px solid #c00;
+  background:#000;
+  padding:15px;
+  text-align:center;
+  border-bottom:4px solid #800;
 }
-.logo-container {
-  margin: 15px 0;
-}
-.logo {
-  max-width: 90%;
-  max-height: 220px;
-  border: 3px solid #400;
-  box-shadow: 0 0 20px #800;
-}
-nav {
-  margin: 15px 0;
-}
+h1 { margin:0; color:#c00; font-size:2.8rem; }
 nav a {
-  color: #f33;
-  font-weight: bold;
-  font-size: 1.3rem;
-  margin: 0 20px;
-  text-decoration: none;
-  text-shadow: 0 0 8px #800;
+  color:#f44;
+  font-weight:bold;
+  margin:0 20px;
+  text-decoration:none;
+  font-size:1.3rem;
 }
-nav a:hover, nav a.active {
-  color: #ff0;
-  text-shadow: 0 0 12px #ff0;
-}
+nav a:hover, nav a.active { color:#ff0; }
 
-main { max-width: 1100px; margin: 20px auto; padding: 0 12px; }
+main { max-width:1100px; margin:20px auto; padding:0 12px; }
 
 .thread {
-  background: #111;
-  padding: 14px;
-  margin: 15px 0;
-  border: 1px solid #300;
-  cursor: pointer;
-  transition: border 0.2s;
+  background:#111;
+  padding:14px;
+  margin:15px 0;
+  border:1px solid #300;
+  cursor:pointer;
 }
-.thread:hover { border-color: #c00; }
-.thread img { max-width: 140px; float: right; margin: 0 0 10px 15px; border: 2px solid #222; }
+.thread:hover { border-color:#c00; }
+.thread img { max-width:140px; float:right; margin:0 0 10px 15px; border:2px solid #222; }
 
 .post {
-  background: #181818;
-  padding: 12px;
-  margin: 15px 0;
-  border-left: 6px solid #400;
+  background:#181818;
+  padding:12px;
+  margin:15px 0;
+  border-left:6px solid #400;
 }
 .post img {
-  max-width: 100%;
-  margin: 10px 0;
-  border: 1px solid #222;
-  display: block;
+  max-width:100%;
+  margin:10px 0;
+  border:1px solid #222;
+  display:block;
 }
-.meta { color: #777; font-size: 0.9rem; }
+.meta { color:#777; font-size:0.9rem; }
 
-.hidden { display: none !important; }
+.reactions {
+  margin-top:8px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.reaction-btn {
+  background:#222;
+  border:1px solid #444;
+  color:#ddd;
+  padding:5px 10px;
+  border-radius:16px;
+  cursor:pointer;
+  font-size:1.1rem;
+}
+.reaction-btn:hover { background:#333; border-color:#666; }
 
-.preview img { max-height: 240px; border: 2px dashed #c00; margin: 10px 0; }
+.hidden { display:none !important; }
+
+.preview img { max-height:220px; border:2px dashed #800; margin:10px 0; }
 
 button {
-  background: #200;
-  color: #f44;
-  border: 2px solid #600;
-  padding: 10px 20px;
-  margin: 8px 8px 8px 0;
-  cursor: pointer;
-  font-weight: bold;
-  text-transform: uppercase;
+  background:#200;
+  color:#f44;
+  border:2px solid #600;
+  padding:10px 18px;
+  margin:6px 6px 6px 0;
+  cursor:pointer;
+  font-weight:bold;
 }
-button:hover {
-  background: #400;
-  color: #ff0;
-  border-color: #800;
-}
+button:hover { background:#400; color:#ff0; }
 
 input, textarea {
-  width: 100%;
-  background: #0f0f0f;
-  color: #ddd;
-  border: 1px solid #300;
-  padding: 10px;
-  margin: 8px 0;
-  font-family: inherit;
+  width:100%;
+  background:#0f0f0f;
+  color:#ddd;
+  border:1px solid #300;
+  padding:10px;
+  margin:8px 0;
+  font-family:inherit;
 }
